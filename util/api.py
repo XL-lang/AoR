@@ -31,6 +31,12 @@ class ChatManager:
         else:
             raise ValueError("请先请求回答")
 
+    def clean_last_conversation(self):
+        try:
+            self.data = self.data[:-2]
+        except Exception as e:
+            raise ValueError("对话长度不够，无法清除上一次对话")
+
 def run(data):
     if first_model == "chatglm":
         from .apis import run

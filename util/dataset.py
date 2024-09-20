@@ -11,7 +11,7 @@ def get_gsm8k():
     df = pd.read_parquet("hf://datasets/openai/gsm8k/" + splits["train"])
     questions = df["question"]
     answer = df["answer"]
-    number_re = re.compile(r'####.(-?\d+)')
+    number_re = re.compile(r'####.(-?\d+\.?\d*)')
     res = []
     for string in answer.values:
         string_re = number_re.findall(string)
