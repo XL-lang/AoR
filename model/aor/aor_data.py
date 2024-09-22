@@ -22,6 +22,7 @@ class Judege_data_element:
         self.sample_num = 0
         self.top_score = 0
         self.top2_score = 0
+        self.quit_type = ""
 
 class Judege_data:
     def __init__(self):
@@ -32,6 +33,7 @@ class Judege_data:
         self.sample_num = []
         self.top_score = []
         self.top2_score = []
+        self.quit_type = []
     def add_data(self,element:Judege_data_element):
         self.index.append(element.index)
         self.question.append(element.question)
@@ -40,16 +42,17 @@ class Judege_data:
         self.sample_num.append(element.sample_num)
         self.top_score.append(element.top_score)
         self.top2_score.append(element.top2_score)
+        self.quit_type.append(element.quit_type)
         self.save_data_to_csv()
 
     def save_data_to_csv(self):
         data_path = "data"
-        columns = ["index", "question", "model_answer", "judge_answer", "sample_num", "top_score", "top2_score"]
+        columns = ["index", "question", "model_answer", "judge_answer", "sample_num", "top_score", "top2_score","quit_type"]
 
 
         data = list(
             zip(self.index, self.question, self.model_answer, self.judge_answer, self.sample_num, self.top_score,
-                self.top2_score))
+                self.top2_score,self.quit_type))
 
 
         df = pd.DataFrame(data, columns=columns)

@@ -23,7 +23,14 @@ class AOR:
 
 
     def run(self):
+        max_count = config["question_number"]
+        if max_count == -1:
+            max_count = len(self.question)
+        count = 0
         for index,question in enumerate(self.question.values):
+            count += 1
+            if count > max_count:
+                break
             self.database = AOR_data()
             self.judge_data_element:Judege_data_element = Judege_data_element()
             self.judge_data_element.index = index
@@ -39,7 +46,6 @@ class AOR:
                 flag = not self.dynamic_sample(turn)
 
             self.judge_data.add_data(self.judge_data_element)
-            break
 
 
     def local_sample(self, question: str):
@@ -112,14 +118,17 @@ class AOR:
 
         # return condition
         if len(temp)<=1:
+            self.judge_data_element.quit_type = "one answer only"
             return True
         if len(self.database.all_data) >= self.max_sample:
+            self.judge_data_element.quit_type = "max sample"
             return True
         if temp[0][1] - temp[1][1] >= config["theta"]:
+            self.judge_data_element.quit_type = "theta"
             return True
         logger.info(f"turn {turn}, dynamic sample")
         for i in range(0,config["batch_size"]):
-            question = self.question.sample().values[0]
+            question = self.database.all_data[0].question
             self.chat_manager.clear()
             self.chat_manager.add(question)
             self.chat_manager.ask()
